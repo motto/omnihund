@@ -1,0 +1,82 @@
+
+body{
+background-color:#E2BEA6
+	}
+.container1{
+/*
+
+*/
+	border-right: 10px solid #BE8D84;
+	border-left: 10px solid #BE8D84;
+	margin-left:1%;
+	margin-right:1%;
+	max-width:1200px;
+	}	
+	
+	
+.container2{
+/*
+
+*/	background: #FFF8E6;
+	max-width:1200px;
+	border-bottom: 10px solid #BE8D84;
+	border-right: 10px solid #BE8D84;
+	border-left: 10px solid #BE8D84;
+	margin-left:1%;
+	margin-right:1%;
+	border-radius: 0px 0px 25px 25px; /*uj firefoxban már jó */
+	-moz-border-radius-bottomright: 30px;
+	-moz-border-radius-bottomleft:30px;
+	-webkit-border-bottom-left-radius: 30px;
+	-webkit-border-bottom-right-radius: 30px;
+	padding-bottom:0px;
+	}
+
+.main-image {
+	background: url('fejlec2.jpg');
+	min-height:400px;
+	
+	 background-repeat: no-repeat;
+	  background-size: 98% 100%;
+	  margin-left:1%;
+	margin-right:1%;
+/*	
+
+*/
+}
+.ff{
+width:50%;
+}
+.formdiv{
+
+background-color:#BE8D84;
+position: absolute;
+    bottom: 0;
+    right: 2%;
+
+
+}
+
+.oldalsav{
+	background: #474D4E;
+	color: #555;
+border-radius: 0px 0px 0px 15px;
+padding:5%;
+
+}
+.oldalsav p{
+	margin-bottom:0px;
+
+}
+.content {
+	background: #FFF8E6;
+	color: #555;
+
+}
+.content h2 {
+	color: #000;
+	font-size: 20px;
+	font-weight: 700;
+	margin: 10px 0
+}
+

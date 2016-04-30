@@ -3,12 +3,15 @@ namespace mod\login;
 defined( '_MOTTO' ) or die( 'Restricted access' );
 //include_once 'mod/login/lt.php';
 use lib\db\DB;
-use lib\db\DBA;
+//use lib\ell;
+use lib\ell;
+use lib\ell\Ell;
 
 class LogADT
 {
 
     public static $view='';
+    public static $hiba=true;
     public static $referer=true;
     public static $task_nev='ltask';
     public static $reg_form='mod/login/view/regisztral_form.html';
@@ -17,22 +20,7 @@ class LogADT
     public static $szerk_form='mod/login/view/szerk_form.html';
     public static $szerk_kesz_form='mod/login/view/szerk_kesz_form.html';
 
-    public static $mezoellenor=
-    ['username'=>['funcnev'=>[$param],
-    			 'funcnev2'=>[$param],
-    			 'funcnev3'=>[$param]],
     		
-    'email'=>    ['funcnev'=>[$param],
-    			 'funcnev2'=>[$param],
-    			 'funcnev3'=>[$param]],
-    		
-    'password'=>['funcnev'=> [$param],
-    			 'funcnev2'=>[$param],
-    			 'funcnev3'=>[$param]],
-    		
-    'ref'=>     ['funcnev'=> [$param],
-    			 'funcnev2'=>[$param],
-    			 'funcnev3'=>[$param]]];
 }
 class LogView
 {
@@ -140,100 +128,111 @@ class Login
 
     }
 
-    public function megsem()
+    public function cancel()
     {
         $this->alap();
     }
 }
 class LogEll{
-	public static function 	codol($val)
+
+	public static function 	passwdHasonlit($pwd1,$pwd2)
 	{
-	   return   md5($val);    
+	    if($pwd1!=$pwd2){\GOB::$pwd2['login'][]='';}
+	    return $pwd1;
 	}
-	public static function 	hasonlit($val)
+	public static function usernev($usernev)
 	{
-	         
+	self::usernev_belep($usernev);
+	self::marvan_user($usernev);
+		return $usernev;
+	}
+	
+	public static function usernev_belep($usernev)
+	{
+	Ell::regex($usernev, '/^([a-záéíóöőúüűA-ZÁÉÍÓÖŐÚÜŰ0-9.,?!]){6,20}$/siu',ModLT::$lang['usernamelong_err'],'login');
+	Ell::regex($usernev,string::$regexT['HU_TOBB_SZO'],ModLT::$lang['spec_char_error'],'login');
+	}
+		
+	public static function email($email)
+	{
+	Ell::regex($email,string::$regexT['MAIL'],ModLT::$lang['email_err'],'login');
+	self::marvan_email($email);
+;
+	}
+	public static function jelszo($jelszo)
+	{
+		string($jelszo, '/^([a-záéíóöőúüűA-ZÁÉÍÓÖŐÚÜŰ0-9.,?!]){6,20}$/siu',ModLT::$lang['pwdlong_err'],'login');
+		return md5($jelszo);
+	}
+	
+	public static function marvan_user($val)
+	{
+		if(marvan('username',$val))
+		{
+			\GOB::$hiba['login'][] = ModLT::$lang['username_have'];
+		}
+	}
+	public static function marvan_email($val)
+	{
+		if(marvan('email',$val))
+		{
+			\GOB::$hiba['login'][] = ModLT::$lang['email_have'];
+		}
+	}
+	
+	public static function marvan($mezonev,$val,$tabla='userek')
+	{
+		$result=true;
+		$sql = "SELECT " . $mezonev . " FROM  " . $tabla . " WHERE " . $mezonev . "='" . $val . "'";
+        $marvan = DB::assoc_sor($sql);
+        if (isset($marvan[$mezonev])) {  $result = false; }
+	
+		return $result;
 	}
 }
 
 class LogDataS {
+	public static function safePOST($val,$res='')
+	{
+		if(isset($_POST[$val])){$res=$_POST[$val];}
+		return $res;
+	}
+	
     public static function ment()
     {
-        $hiba=true;
-        $jelszo = md5($_POST['password']);
-        $jelszo2 = md5($_POST['password2']);
-        $usernev = $_POST['username'];
-        if($jelszo!=$jelszo2)
+    	$res=true;$beirT=[];
+    	\GOB::$hiba['login']=[];
+        $beirT['password'] =LogEll::jelszo(self::safePOST('password') );
+       	$beirT['username'] =LogEll::usernev(self::safePOST('username') );
+       	$beirT['email'] =LogEll::email(self::safePOST('email') );
+       	LogEll::passwdHasonlit($beirT['password'], md5(self::safePOST('password2')));
+        
+        if(empty(\GOB::$hiba['login']))
         {
-            \GOB::$hiba['login'][]=ModLT::$newpasswd_nomatch[\GOB::$lang];
-            $hiba=false;
-        }
-        if(!self::usernev_ell($usernev))
-        {
-            $hiba=false;
-        }
-        $sql = "SELECT username FROM  userek WHERE username='" . $usernev . "'";
-        $marvan = DB::assoc_sor($sql);
-        if (isset($marvan['username'])) {
-            \GOB::$hiba['login'][] = ModLT::$username_have[\GOB::$lang];
-            $hiba = false;
-        }
-        if($hiba)
-        {
-            $beszurtid=DB::beszur_postbol(LogADT::$tablanev,LogADT::$mentmezok);
+            $beszurtid=DB::beszur_postbol(LogADT::$tablanev,$beirT);
             if($beszurtid==0)
             {
-                \GOB::$hiba['login'][]=ModLT::$dberror[\GOB::$lang];
-                $hiba=false;
+                \GOB::$hiba['login'][]=ModLT::$lang['dberror'];
+                $res=false;
             }
-         
-        }
-        return $hiba;
-    }
-    public static function hibakiir()
-    {
-        $result='';
-        if(isset(\GOB::$hiba['login']))
-        {//print_r(\GOB::$hiba);
-            foreach(\GOB::$hiba['login'] as $hiba)
-            {
-                $result=$result.$hiba.'</br>';
-            }
-        }
-      //  echo $result;
-        return $result;
-    }
-    public static function usernev_ell($usernev)
-    {
-        $result=true;
-        $Regex_hu_tobbszo='/^[a-zA-Z\d éáűúőóüöÁÉŰÚŐÓÜÖ]+$/';
-        $Regex_minmax='/^.{5,20}$/';
-        if(preg_match($Regex_minmax,$usernev)!=1)
-        {
-            \GOB::$hiba['login'][]= ModLT::$usernamelong_err[\GOB::$lang];
-            $result=false;
-        }
-        if(preg_match($Regex_hu_tobbszo,$usernev)!=1)
-        {
-            \GOB::$hiba['login'][]=ModLT::$spec_char_error[\GOB::$lang];
-            $result=false;
-        }
-
-        return $result;
-    }
+        }else{$res=false;}
+      return $res;
+    }  
     public static function belep()
-    {   $result=true;
-        $jelszo = md5($_POST['password']);
-        $usernev = $_POST['username'];
+    {  
+    	$result=true;
+    	\GOB::$hiba['login']=[];
+        $jelszo = LogEll::jelszo(self::safePOST('password') );
+        $usernev =LogEll::usernev_belep(self::safePOST('username') );
 
-        if(self::usernev_ell($usernev))
+        if(empty(\GOB::$hiba['login']))
         {
             $sql="SELECT id,password FROM userek WHERE username='".$usernev."' AND pub='0'";
             $dd=DB::assoc_sor($sql);
             if(!empty($dd))
             {    if($jelszo!=$dd['password'])
                 {
-                    \GOB::$hiba['login'][]=ModLT::$login_data_nomatch[\GOB::$lang];
+                    \GOB::$hiba['login'][]=ModLT::$lang['login_data_nomatch'];
 
                 }
                 else
@@ -241,33 +240,54 @@ class LogDataS {
                     $_SESSION['userid']=$dd['id'];
                    // echo $_SESSION['userid'];
                 }
-            }else{ $result=false;\GOB::$hiba['login'][]=ModLT::$login_data_nomatch[\GOB::$lang];}
+            }else{ $result=false;\GOB::$hiba['login'][]=ModLT::$lang['login_data_nomatch'];}
         }
         return $result;
-       // echo 'belépés----';
     }
-    public static function szerk_ment()
+    public static function passwdchange()
     {
-        /**TODO
-         * usernév ellenórzést megcsinálni hogy ne lehessen két ugyanolyan de a sajátja maradhasson  ment llenőrzése nemó ide!
-         */
+    	\GOB::$hiba['login']=[];
+    
+    	$res = true;
+    	$old_jelszo  = LogEll::jelszo(self::safePOST('oldpass') );
+    	$jelszo  = LogEll::jelszo(self::safePOST('password1') );
+    	$jelszo2 = LogEll::jelszo(self::safePOST('password2') );
+    	LogEll::passwdHasonlit($jelszo, $jelszo2);
+    	
+    	if ($old_jelszo != \GOB::$user['password']) {
+    		\GOB::$hiba['login'][] = ModLT::$lang['oldpasswd_err'];
+    		$res = false;
+    	}
 
-        $hiba = true;
-        $old_jelszo = md5($_POST['oldpass']);
-        $jelszo = md5($_POST['password']);
-        $jelszo2 = md5($_POST['password2']);
-        if ($old_jelszo != \GOB::$user['password']) {
-            \GOB::$hiba['login'][] = ModLT::$oldpasswd_err[\GOB::$lang];
-            $hiba = false;
-        }
-        if ($jelszo != $jelszo2) {
-            \GOB::$hiba['login'][] = ModLT::$newpasswd_nomatch[\GOB::$lang];
-            $hiba = false;
-        }
-        if ($hiba) {
-          DB::parancs("UPDATE userek SET password='".$jelszo."' WHERE id='".\GOB::$user['id']."'");;
-        }
-
+    	if (empty(\GOB::$hiba['login'])) {
+    		DB::parancs("UPDATE userek SET password='".$jelszo."' WHERE id='".\GOB::$user['id']."'");;
+    	}
+    	return $res;
+    
     }
-
+    public static function usrnamechange()
+    {
+    	\GOB::$hiba['login']=[];
+    	$res = true;
+    	$username = LogEll::usernev(self::safePOST('oldpass'));
+ 
+    	if (empty(\GOB::$hiba['login'])) {
+    		DB::parancs("UPDATE userek SET username='".$username."' WHERE id='".\GOB::$user['id']."'");
+    	}
+    	return $res;
+    }
+     
+    public static function hibakiir()
+    {
+        $result='';
+        if(isset(\GOB::$hiba['login']))
+        {
+            foreach(\GOB::$hiba['login'] as $hiba)
+            {
+                $result.=$hiba.'</br>';
+            }
+        }
+        return $result;
+    }
+ 
 }

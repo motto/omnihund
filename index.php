@@ -6,7 +6,6 @@ use  lib\db ;
 use  lib\base as alap;
 
 include 'def.php';
-
 if(CONF::$offline=='igen'&& !GOB::get_userjog('admin.php'))
 {die(CONF::$offline_message);}
 

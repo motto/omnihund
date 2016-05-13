@@ -22,21 +22,21 @@ public static function login($param='')
        //  include_once 'mod/login/login.php';
         $login=new Login();
         $view=$login->result();
-        $view=FeltoltS::LT($view,'ModLT');
+        //$view=FeltoltS::LT($view,'ModLT');
             return $view;
     }
-public static function ikonsor($param='')
+public static function ikonsor($ikonsorT)
     {
         //include_once 'mod/ikonsor/ikonsor.php';
         $ob=new Ikonsor();
        // $ob->mezok=$ikonok;
-        return $ob->result($param::$ikonsorT);
+        return $ob->result($ikonsorT);
     }
-public static function tabla($param='')
+public static function tabla($tab_szerkT,$dataT)
     { //var_dump($param);
         //print_r($param);
         //include_once 'mod/tabla/tabla.php';
-        $ob=new Tabla($param::$tab_szerkT,$param::$dataT);
+        $ob=new Tabla($tab_szerkT,$dataT);
         return $ob->result();
     }
 }

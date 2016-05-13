@@ -1,3 +1,4 @@
+
 <?php
 namespace lib\html;
 use mod\MOD;
@@ -14,7 +15,7 @@ class FeltoltS{
         return $res;
     }
     static public function mod($view,$param)
-    {
+    { $matches=[];
         preg_match_all ("/<!--:([^`]*?)-->/",$view , $matches);
         $mezotomb=$matches[1];
         if(is_array($mezotomb))
@@ -67,6 +68,7 @@ class FeltoltS{
     }
     public static function LT_tisztit($view)
     {
+    	$matches=[];
         preg_match_all ("/<!--##([^`]*?)-->/",$view , $matches);
         $cseretomb=$matches[1];
 
@@ -82,6 +84,7 @@ class FeltoltS{
     }
     public static function data_tisztit($view)
     {
+    	$matches=[];
         preg_match_all ("/<!--#([^`]*?)-->/",$view , $matches);
         $cseretomb=$matches[1];
 

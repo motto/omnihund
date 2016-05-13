@@ -7,7 +7,7 @@ class T_ell{
 
 	static public function strminmax(){
 
-		echo 'strminmax: hiba: ';
+		echo 'strminmax: hiba ág: ';
 
 		$hibauz='hiba';
 		$hibaT=['kk','jkjjjhj','jjjj j','kkkkké','lll@#$','lll #$','llléüő','lll üő',''];
@@ -22,7 +22,7 @@ class T_ell{
 			}
 				
 		}
-		echo ' jo: ';
+		echo ' jo ág: ';
 		foreach($joT as $par){
 
 			\GOB::$hiba['login']=[];
@@ -39,7 +39,7 @@ class T_ell{
 	}
 	static public function email(){
 
-		echo 'email: hiba: ';
+		echo 'email: hiba ág: ';
 
 		$hibauz='hiba';
 		$hibaT=['kkghfghfg','jkjjjhj.hu','jjjj j@kk.hu','kkkkkéj@kk.hu','j@kk.hulll@#$','llj@.hu','@ll.hu'];
@@ -54,7 +54,7 @@ class T_ell{
 			}
 
 		}
-		echo ' jo: ';
+		echo ' jo ág: ';
 		foreach($joT as $par){
 
 			\GOB::$hiba['login']=[];
@@ -71,7 +71,7 @@ class T_ell{
 	}
 	static public function magyarszo(){
 	
-		echo 'magyarszo: hiba: ';
+		echo 'magyarszo: hiba ág: ';
 	
 		$hibauz='hiba';
 		$hibaT=['kjh ',' hjjk','áél.á','hg"','sdgh\'shg','sdfs<','@ll.hu'];
@@ -86,7 +86,7 @@ class T_ell{
 			}
 	
 		}
-		echo ' jo: ';
+		echo ' jo:ág ';
 		foreach($joT as $par){
 	
 			\GOB::$hiba['login']=[];
@@ -103,7 +103,7 @@ class T_ell{
 	}
 	static public function magyartext(){
 	
-		echo 'magyartext: hiba: ';
+		echo 'magyartext: hiba ág: ';
 	
 		$hibauz='hiba';
 		$hibaT=[' hjjk<','áél>á','','sdgh\'shg','sdfs<#','@ll.hu',';ll.hu'];
@@ -118,7 +118,7 @@ class T_ell{
 			}
 	
 		}
-		echo ' jo: ';
+		echo ' jo ág: ';
 		foreach($joT as $par){
 	
 			\GOB::$hiba['login']=[];
@@ -135,6 +135,7 @@ class T_ell{
 	}
 	
 }
+echo "T_ell:------------- \n";
 T_ell::strminmax();
 T_ell::email();
 T_ell::magyarszo();

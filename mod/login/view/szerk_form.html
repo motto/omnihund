@@ -1,26 +1,22 @@
 
-<!--figyelem! legyen benne <input type="hidden" name="itemid" data="id" /> mező -->
 
 
-<h4><!--##passwd_change--></h4>
+
+<h4>Felhasználói adatok változtatása</h4>
 <!--<h5>hiba</h5>-->
-<form    method="post" action="" >
-
+<form    method="post" >
+<input type="hidden" name="u" value="a" >
     <div class="form-group">
-        <input type="password" class="form-control" name="oldpass" placeholder="Régi jelszó" data="oldpass" required="required" ><!--##regi_jelszo-->
+        <button type="submit" name="ltask" value="passwd_szerk" class="btn btn-primary ">Jelszó változtatás</button><!--##ment-->
+    </div>
+  <div class="form-group">
+        <button type="submit" name="ltask" value="email_szerk" class="btn btn-primary ">Email változtatás</button><!--##ment-->
     </div>
     <div class="form-group">
-        <input type="password" class="form-control" name="password" placeholder="Új jelszó" data="password" required="required" ><!--##uj_jelszo-->
+        <button type="submit" name="ltask" value="username_szerk" class="btn btn-primary ">felhasználónév változtatás</button><!--##ment-->
     </div>
-    <div class="form-group">
-        <input type="password" class="form-control" name="password2" placeholder="Új jelszó mégegyszer" data="password2" required="required" ><!--##uj_megegyszer-->
-    </div>
-    <div class="form-group">
-        <input type="hidden" name="itemid" data="id" />
-        <input type="hidden" name="mod" value="login" />
-        <button type="submit" name="ltask" value="szerkment" class="btn btn-primary btn-lg">Ment</button><!--##ment-->
-       <button type="reset" name="ltask" value="cancel" class="btn btn-primary btn-lg" onclick="index.php'" >Mégsem</button><!--##megsem-->
-   </div>
-
+      <div class="form-group">
+      <button type="button" name="ltask" onclick="window.location='index.php?app=login';" class="btn btn-primary ">Mégsem</button>
+      </div>
  </form>
 

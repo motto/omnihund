@@ -3,7 +3,7 @@ namespace lib\db;
 defined( '_MOTTO' ) or die( 'Restricted access' );
 class DB
 {
-    static public function assoc_tomb($sql)
+   static public function assoc_tomb($sql)
     {
         if(\CONF::$sql_log='full'){\GOB::$log['sql'][]=$sql;};
         $result = array();
@@ -20,8 +20,7 @@ class DB
         }
         return $result;
     }
-
-    static public function assoc_sor($sql)
+   static public function assoc_sor($sql)
     {
         if(\CONF::$sql_log='full'){\GOB::$log['sql'][]=$sql;}
         $result = array();

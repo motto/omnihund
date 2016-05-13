@@ -3,15 +3,11 @@ namespace mod\ikonsor;
 
 defined( '_MOTTO' ) or die( 'Restricted access' );
 trait icon_from_glyph{
-    public function geticon_old($mezo){
-        $gl='tasks';
-        $glyphT=array('szerk'=>'edit','uj'=>'plus','torol'=>'trash','pub'=>'ok-circle','unpub'=>'ban-circle','email'=>'envelope');
-        if(isset($glyphT[$mezo])){$gl=$glyphT[$mezo];}
-        return '<span style="font-size: 1.6em;margin-bottom:10px;" class="glyphicon glyphicon-'.$gl.'">';
-    }
-    public function geticon($gl='tasks')
+  
+    public function geticon($gliph)
     {
-        return '<span style="font-size: 1.6em;margin-bottom:10px;" class="glyphicon glyphicon-'.$gl.'">';
+        return '<span style="font-size: 1.6em;margin-bottom:10px;" 
+        		class="glyphicon glyphicon-'.$gliph.'">';
     }
 }
 
@@ -39,27 +35,27 @@ trait lt_fromLT{
     public function feltolt(){}
 }
 class Ikonsor
-{
-    use lt_fromLT; //nyelvi tömböt hogyan tölti fel
-    use icon_from_glyph;
-
-    public $lt=array('uj'=>'Új','szerk'=>'Szerk','pub'=>'Pub','unpub'=>'Unpub','torol'=>'Töröl','email'=>'Email');
+{ 
+ use lt_fromLT; //nyelvi tömböt hogyan tölti fel
+ use icon_from_glyph;
+	public static $glyphT=array('szerk'=>'edit','uj'=>'plus','torol'=>'trash','pub'=>'ok-circle','unpub'=>'ban-circle','email'=>'envelope');  
+    public static $lt=array('uj'=>'Új','szerk'=>'Szerk','pub'=>'Pub','unpub'=>'Unpub','torol'=>'Töröl','email'=>'Email');
 
     public function result($ikonsorT)
     {
         $this->feltolt();
 
-        $res='';
-        foreach ($ikonsorT as $task=>$ikon ) {
-            $icon=$this->geticon($ikon);
-            if(isset($this->lt[$task]))
-            {$label=$this->lt[$task];}
+        $res='<div style="float:right;margin:20px;">';
+        foreach ($ikonsorT as $task) {
+            $icon=$this->geticon(self::$glyphT[$task]);
+            if(isset(self::$lt[$task]))
+            {$label=self::$lt[$task];}
             else{$label=$task;}
-            if($task=='torol'){ $oncl='onclick="return confirmSubmit()"';}
+            if($task=='torol'){ $oncl='onclick="return confirmSubmit(\'Az ok gombra kattintva a felhasználó végérvényesen törlődik!\')"';}
             else{$oncl='';}
             $res.='<button class="btkep" type="submit" name="task"  value="'.$task.'" '.$oncl.'>'.$icon.'</span></br>'.$label.'</button>';
         }
-
+		 $res.='</div><div style="clear:both;"></div>';
         return $res;
     }
 }

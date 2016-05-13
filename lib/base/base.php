@@ -2,7 +2,12 @@
 namespace lib\base;
 class Base
 {
-public static function set_lang($lang)
+/**
+ *Paramétere álltalában az eredeti GOB::Lang visszatérési értéke 
+előbb a böngészőtől kéri le az alapértelmezett nyelvet majd a 'SESSION','POST','GET' ben ellenőrzi 
+ha valamelyikben az adott érték és szerepel a CONF::$accepted_langT-ben azzal tér vissza
+ */
+public static function setlang($lang)
 {
  if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
  {
@@ -15,4 +20,31 @@ public static function set_lang($lang)
     $_SESSION['lang']=$lang;
     return $lang;
 }
+/**
+*Az adott sorrendben (alapértelmezett:'SESSION','POST','GET')megnézi hogy a $key kulcs létezik-e
+* ha igen  azzzal felülírja a $def-et ha nem a def változóval tér vissza
+* tehát ha mindegyikben létezik akkor az utolsó (alapesetben:GET) lesz a visszatérési érték.
+*/
+public static function setGlob($key,$def='',$sorrend=['SESSION','POST','GET'])
+{
+	foreach ($sorrend as $sor){
+		
+		eval('if(isset($_'.$sor.'[\''.$key.'\'])){$def=$_'.$sor.'[\''.$key.'\'];}');
+	}
+	return $def;
+}
+/**
+tömb $key rtékével tér vissza ha létezik vagy a$ def-el
+ */
+static public function safeTval($arr=[],$key='',$def='')
+    {
+        if (isset($arr[$key]))
+        {
+            return $arr[$key];
+        } else
+        {
+            return $def;
+        }
+    }
+
 }

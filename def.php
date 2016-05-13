@@ -28,13 +28,12 @@ class CONF
     public static $accepted_langT=array('en','hu');
     public static $tmpl='flat';
     public static $title='Omnihund';
-    public static $app='login';
     public static $upload_dir='user/share';
-    public static $adminok=array(3,4);
+    public static $adminok=array(1,2);
     public static $host = 'localhost';
     public static $felhasznalonev = 'root';
     public static $jelszo = '';
-    public static $adatbazis = 'social';
+    public static $adatbazis = 'omnihund';
     public static $mailfrom= 'motto001@gmail.com';
     public static $fromnev= 'Admin';
     public static $offline = 'nem';
@@ -42,9 +41,9 @@ class CONF
 }
 
 class GOB
-{
+{ 
+	private static $userjog=Array();public static $app='login';
     public static $lang='en';
-    private static $userjog=Array();
     public static $log=Array();
     public static $userT=Array();
     /**
@@ -57,6 +56,8 @@ class GOB
     public static $hiba=array();
     public static $param=array();
     public static $html=null;
+    public static $head=[];
+    public static $body=[];
     /**
      * @var string
      * '' (alapértelmezés) az adminok csak saját cikkeiket szerkeszthetik

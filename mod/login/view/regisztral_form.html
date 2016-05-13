@@ -1,34 +1,26 @@
 
-<!--figyelem! legyen benne <input type="hidden" name="itemid" data="id" /> mező
-
-<section class="container">
-    <a href="index.php?app=admin.php&fget=login&task=reg&ref=453546" style="color: yellow" >Referencia link</a>
-</br></br>-->
-    <h4><!--##reg--></h4>
-    <!--<h5>hiba</h5>-->
+<h4>Regisztrálás</h4>
+<!--<h5>hiba</h5>-->
     <!--<h5>ref</h5>-->
     <form    method="post" action="" >
+
+        <div class="form-group">
+            <input type="text" class="form-control" required="required" placeholder="Felhasználónév"name="username" data="username" >
+        </div>
+        <div class="form-group">
+            <input type="email" class="form-control" name="email" placeholder="Email" data="Email" required="required" >
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Jelszó" data="password" required="required" >
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" name="password2" placeholder="Jelszó mégegyszer" data="password2" required="required" >
+        </div>
+        <div class="form-group">
       
-                <div class="form-group">
-                    <input type="text" class="form-control" required="required" placeholder="Felhasználónév"name="username" data="username" >
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" name="email" placeholder="Email" data="Email" required="required" >
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" name="password" placeholder="Jelszó" data="password" required="required" >
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" name="password2" placeholder="Jelszó mégegyszer" data="password2" required="required" >
-                </div>
-                <div class="form-group">
-                    <input type="hidden" name="ref" data="ref" />
-                    <input type="hidden" name="mod" value="login" />
-                    <button type="submit" name="ltask" value="ment" class="btn btn-primary btn-lg">Regisztrál</button>
-                    <button type="button" name="ltask" onclick="window.location='
-					<!--|link|-->
-                    ';" class="btn btn-primary btn-lg">Mégsem</button>
-                </div>
+            <button type="submit" name="ltask" value="ment" class="btn btn-primary ">Regisztrál</button>
+            <button type="button" name="ltask" onclick="window.location='index.php?app=login';" class="btn btn-primary">Mégsem</button>
+        </div>
 
          
     </form>
